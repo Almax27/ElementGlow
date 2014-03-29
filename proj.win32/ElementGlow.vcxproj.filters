@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Utility\ConditionalSystem\ConditionalSystem.cpp" />
+    <ClCompile Include="Classes\Utility\Events\EventManager.cpp" />
+    <ClCompile Include="Classes\Utility\Events\IEventSubscriber.cpp" />
+    <ClCompile Include="Classes\Utility\json\jsoncpp.cpp" />
+    <ClCompile Include="Classes\Utility\Observable\Observable.cpp" />
+    <ClCompile Include="Classes\Utility\Observable\Observer.cpp" />
+    <ClCompile Include="Classes\Utility\SneakyInput\SneakyButton.cpp" />
+    <ClCompile Include="Classes\Utility\SneakyInput\SneakyButtonSkinnedBase.cpp" />
+    <ClCompile Include="Classes\Utility\SneakyInput\SneakyJoystick.cpp" />
+    <ClCompile Include="Classes\Utility\SneakyInput\SneakyJoystickSkinnedBase.cpp" />
+    <ClCompile Include="Classes\Utility\StateMachine\StateMachineState.cpp" />
+    <ClCompile Include="Classes\Utility\Debug.cpp" />
+    <ClCompile Include="Classes\Utility\Easing.cpp" />
+    <ClCompile Include="Classes\Utility\simplexnoise.cpp" />
+    <ClCompile Include="Classes\AppDelegate.cpp" />
+    <ClCompile Include="Classes\Scenes\GameScene.cpp" />
+    <ClCompile Include="Classes\Balls\Ball.cpp" />
+    <ClCompile Include="Classes\GameManager.cpp" />
+    <ClCompile Include="Classes\Lines\Line.cpp" />
+    <ClCompile Include="Classes\Paddles\Paddle.cpp" />
+    <ClCompile Include="Classes\Players\AIPlayer.cpp" />
+    <ClCompile Include="Classes\Players\HumanPlayer.cpp" />
+    <ClCompile Include="Classes\Players\Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Utility\ConditionalSystem\ConditionalSystem.h" />
+    <ClInclude Include="Classes\Utility\ConditionalSystem\IConditional.h" />
+    <ClInclude Include="Classes\Utility\Events\Event.h" />
+    <ClInclude Include="Classes\Utility\Events\EventManager.h" />
+    <ClInclude Include="Classes\Utility\Events\IEventSubscriber.h" />
+    <ClInclude Include="Classes\Utility\json\json-forwards.h" />
+    <ClInclude Include="Classes\Utility\json\json.h" />
+    <ClInclude Include="Classes\Utility\Observable\Observable.h" />
+    <ClInclude Include="Classes\Utility\Observable\Observer.h" />
+    <ClInclude Include="Classes\Utility\SneakyInput\SneakyButton.h" />
+    <ClInclude Include="Classes\Utility\SneakyInput\SneakyButtonSkinnedBase.h" />
+    <ClInclude Include="Classes\Utility\SneakyInput\SneakyJoystick.h" />
+    <ClInclude Include="Classes\Utility\SneakyInput\SneakyJoystickSkinnedBase.h" />
+    <ClInclude Include="Classes\Utility\StateMachine\StateMachine.h" />
+    <ClInclude Include="Classes\Utility\StateMachine\StateMachineState.h" />
+    <ClInclude Include="Classes\Utility\CCMathHelper.h" />
+    <ClInclude Include="Classes\Utility\Debug.h" />
+    <ClInclude Include="Classes\Utility\Easing.h" />
+    <ClInclude Include="Classes\Utility\Factory.h" />
+    <ClInclude Include="Classes\Utility\ObjectPool.h" />
+    <ClInclude Include="Classes\Utility\PooledFactory.h" />
+    <ClInclude Include="Classes\Utility\Rand.h" />
+    <ClInclude Include="Classes\Utility\simplexnoise.h" />
+    <ClInclude Include="Classes\Utility\Singleton.h" />
+    <ClInclude Include="Classes\Utility\ToFromString.h" />
+    <ClInclude Include="Classes\AppDelegate.h" />
+    <ClInclude Include="Classes\Scenes\GameScene.h" />
+    <ClInclude Include="Classes\ElementTypes.h" />
+    <ClInclude Include="Classes\Balls\Ball.h" />
+    <ClInclude Include="Classes\Resources.h" />
+    <ClInclude Include="Classes\GameManager.h" />
+    <ClInclude Include="Classes\Lines\Line.h" />
+    <ClInclude Include="Classes\Paddles\Paddle.h" />
+    <ClInclude Include="Classes\Players\AIPlayer.h" />
+    <ClInclude Include="Classes\Players\HumanPlayer.h" />
+    <ClInclude Include="Classes\Players\Player.h" />
+  </ItemGroup>
+</Project>

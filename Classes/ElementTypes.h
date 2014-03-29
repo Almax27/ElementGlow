@@ -1,0 +1,13 @@
+#ifndef _COLOUR_TYPES_H_
+#define _COLOUR_TYPES_H_
+
+enum ElementType
+{
+	ELEMENT_FIRE,
+	ELEMENT_WATER,
+	ELEMENT_WIND,
+	ELEMENT_LEAF,
+	ELEMENT_COUNT
+};
+
+#endif //_COLOUR_TYPES_H_
