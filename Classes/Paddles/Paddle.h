@@ -3,6 +3,8 @@
 
 #include "cocos2d.h"
 
+#include <list>
+
 class Line;
 
 class Paddle : public cocos2d::CCNode
@@ -15,7 +17,8 @@ public:
 	//CCNode
 	virtual bool init();
 
-	void triggerPaddle();
+	//Returns number of balls hit
+	int triggerPaddle(int _playerIndex);
 
 	//start and end dictate the paddles bounds and direction on it's parent line
 	CC_SYNTHESIZE(float, startPos, StartPos);
@@ -25,6 +28,8 @@ protected:
 	Paddle(Line* _line, float _startPos, float _endPos);
 
 	Line* parentLine;
+
+	cocos2d::CCSprite* paddleBody;
 private:
 };
 

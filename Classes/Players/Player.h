@@ -2,8 +2,9 @@
 #define _PLAYER_H_
 
 #include "cocos2d.h"
+#include "Utility/Events/IEventSubscriber.h"
 
-class Player : public cocos2d::CCObject
+class Player : public cocos2d::CCObject, public IEventSubscriber
 {
 public:
 	virtual ~Player();
@@ -13,7 +14,11 @@ public:
 	virtual bool init();
 	virtual void update(float _dt);
 
-	CC_SYNTHESIZE_READONLY(unsigned int, playerIndex, PlayerIndex);
+	//IEventSubscriber
+	virtual void OnEvent(Event* _event);
+
+	CC_SYNTHESIZE_READONLY(int, playerIndex, PlayerIndex);
+	CC_SYNTHESIZE(int, score, Score);
 
 protected:
 	Player(unsigned int _playerIndex);

@@ -175,6 +175,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="Classes\Utility\Factory.h" />
     <ClInclude Include="Classes\Utility\json\json-forwards.h" />
     <ClInclude Include="Classes\Utility\json\json.h" />
+    <ClInclude Include="Classes\Utility\LineSpriteHelper.h" />
     <ClInclude Include="Classes\Utility\ObjectPool.h" />
     <ClInclude Include="Classes\Utility\Observable\Observable.h" />
     <ClInclude Include="Classes\Utility\Observable\Observer.h" />

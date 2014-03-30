@@ -15,10 +15,13 @@ public:
 	virtual bool init();
 	virtual void update(float _dt);
 
+	CC_SYNTHESIZE(int, lastPlayerIndex, LastPlayerIndex);
 	CC_SYNTHESIZE(float, linePos, LinePos);
 	CC_SYNTHESIZE(float, lineVelocity, LineVelocity);
 
 	void reverseVelocity();
+	void scaleLineVelocity(float _scale); 
+	void increaseLineVelocity(float _deltaVel); //increase in direction of travel
 
 protected:
 	Ball(Line* _parentLine);

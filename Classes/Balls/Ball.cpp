@@ -8,7 +8,7 @@
 USING_NS_CC;
 
 Ball::Ball(Line* _parentLine)
-	: parentLine(_parentLine)
+	: parentLine(_parentLine), lastPlayerIndex(-1)
 {
 }
 
@@ -42,23 +42,21 @@ bool Ball::init()
 void Ball::update(float _dt)
 {
 	linePos += lineVelocity * _dt;
-	if(linePos < 0)
-	{
-		linePos = 0;
-		//TODO: kill?
-		lineVelocity = -lineVelocity;
-	}
-	else if(linePos*linePos > parentLine->getLengthSq())
-	{
-		linePos = parentLine->getLength();
-		//TODO: kill?
-		lineVelocity = -lineVelocity;
-	}
-
 	this->setPosition(parentLine->getPointFromAbsDistance(linePos));
 }
 
 void Ball::reverseVelocity()
 {
 	lineVelocity = -lineVelocity;
+}
+
+void Ball::scaleLineVelocity(float _scale)
+{
+	lineVelocity *= _scale;
+}
+
+void Ball::increaseLineVelocity(float _deltaVel)
+{
+	int direction = (lineVelocity > 0) - (lineVelocity < 0);
+	lineVelocity += _deltaVel * direction;
 }

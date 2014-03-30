@@ -23,15 +23,18 @@ public:
 	//IEventSubscriber
 	virtual void OnEvent(Event* _event);
 
+	virtual void onPlayerHitBall(Ball* _ball, int _playerIndex);
+	virtual void onPlayerMissedBall(Ball* _ball, int _playerIndex);
+
 	//helper methods
 	void spawnBall(float _relPos, float _velocity);
-	void triggerPaddle(unsigned int _playerIndex);
+	void triggerPaddle(int _playerIndex);
+	void reset();
 
 	CC_PROPERTY_PASS_BY_REF(cocos2d::CCPoint, startPos, StartPos);
 	CC_PROPERTY_PASS_BY_REF(cocos2d::CCPoint, endPos, EndPos);
 
-	float getLength() { return startPos.getDistance(endPos); }
-	float getLengthSq() { return startPos.getDistanceSq(endPos); }
+	float getLineLength() { return lineLength; }
 
 	//converts an absolute distance along the line to a GL point local to this object
 	cocos2d::CCPoint getPointFromAbsDistance(float _absDistance);
@@ -42,6 +45,8 @@ public:
 
 protected:
 	Line();
+
+	float lineLength;
 
 	std::map<int, Paddle*> paddleMap;
 	cocos2d::CCSprite* lineGraphic;

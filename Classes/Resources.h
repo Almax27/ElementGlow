@@ -9,4 +9,10 @@ namespace SpriteResource
 	static const char* line = "sprites/line.png";
 }
 
+namespace AudioResource
+{
+	static const char* hit = "audio/hit.wav";
+	static const char* miss = "audio/miss.wav";
+}
+
 #endif //_RESOURCES_H_

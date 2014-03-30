@@ -2,9 +2,12 @@
 #include "Balls/Ball.h"
 #include "Paddles/Paddle.h"
 
+#include "Utility/LineSpriteHelper.h"
 #include "Utility/Rand.h"
+#include "Utility/Events/EventManager.h"
 #include "Resources.h"
 
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
@@ -34,17 +37,22 @@ Line* Line::create(const cocos2d::CCPoint& _startPos, const cocos2d::CCPoint& _e
 
 bool Line::init(const cocos2d::CCPoint& _startPos, const cocos2d::CCPoint& _endPos)
 {
+	if(CCNode::init() == false)
+	{
+		return false;
+	}
+
 	//create line graphic
 	lineGraphic = CCSprite::create(SpriteResource::line);
 	this->addChild(lineGraphic);
 
-	startPos = _startPos;
-	endPos = _endPos;
+	this->setStartPos(_startPos);
+	this->setEndPos(_endPos);
 	updateLineGraphic();
 
-	paddleMap[0] = Paddle::create(this, 0, 50);
+	paddleMap[0] = Paddle::create(this, 0, 100);
 	this->addChild(paddleMap[0]);
-	paddleMap[1] = Paddle::create(this, this->getLength(),  this->getLength() - 50);
+	paddleMap[1] = Paddle::create(this, this->getLineLength(),  this->getLineLength() - 100);
 	this->addChild(paddleMap[1]);
 
 	unsubscribeAll();
@@ -52,14 +60,28 @@ bool Line::init(const cocos2d::CCPoint& _startPos, const cocos2d::CCPoint& _endP
 
 	spawnBall(0.5f, 500 * randf(0.5f, 1.0f));
 
-	return CCNode::init();
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect(AudioResource::hit);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect(AudioResource::miss);
+
+	return true;
 }
 
 void Line::update(float _dt)
 {
 	for(std::list<Ball*>::iterator it = activeBalls.begin(); it != activeBalls.end(); it++)
 	{
-		(*it)->update(_dt);		
+		Ball* ball = *it;
+
+		ball->update(_dt);		
+
+		if(ball->getLinePos() <= 0 && ball->getLineVelocity() < 0)
+		{
+			onPlayerMissedBall(ball, 0);
+		}
+		else if(ball->getLinePos() >= this->getLineLength() && ball->getLineVelocity() > 0)
+		{
+			onPlayerMissedBall(ball, 1);
+		}
 	}
 }
 
@@ -67,31 +89,65 @@ void Line::OnEvent(Event* _event)
 {
 	if(_event->isType("PlayerTouch"))
 	{
-		unsigned int playerIndex = (unsigned int) _event->getData();
+		unsigned int playerIndex = (int) _event->getData();
 		triggerPaddle(playerIndex);
+	}
+}
+
+void Line::onPlayerHitBall(Ball* _ball, int _playerIndex)
+{
+	if(_ball->getLastPlayerIndex() != _playerIndex)
+	{
+		_ball->setLastPlayerIndex(_playerIndex);
+		_ball->reverseVelocity();
+		_ball->increaseLineVelocity(40);
+		EventManager::Get().publishEvent(new Event("PlayerHit", (void*)_playerIndex));
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(AudioResource::hit);
+	}
+}
+
+void Line::onPlayerMissedBall(Ball* _ball, int _playerIndex)
+{
+	_ball->reverseVelocity();
+
+	if(_ball->getLastPlayerIndex() != _playerIndex)
+	{
+		_ball->setLastPlayerIndex(_playerIndex);
+		_ball->increaseLineVelocity(-10);
+		EventManager::Get().publishEvent(new Event("PlayerMissed", (void*)_playerIndex));
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(AudioResource::miss);
 	}
 }
 
 void Line::spawnBall(float _relPos, float _velocity)
 {
 	Ball* newBall = Ball::create(this);
-	newBall->setLinePos(this->getLength() * _relPos);
+	newBall->setLinePos(this->getLineLength() * _relPos);
 	newBall->setLineVelocity(_velocity);
 
 	this->addChild(newBall);
 	activeBalls.push_back(newBall);
 }
 
-void Line::triggerPaddle(unsigned int _playerIndex)
+void Line::triggerPaddle(int _playerIndex)
 {
 	if(paddleMap.count(_playerIndex))
 	{
-		paddleMap[_playerIndex]->triggerPaddle();
+		paddleMap[_playerIndex]->triggerPaddle(_playerIndex);
 	}
 	else
 	{
 		CCLOG("No paddle exists for player %i", _playerIndex);
 	}
+}
+
+void Line::reset()
+{
+	for(std::list<Ball*>::iterator it = activeBalls.begin(); it != activeBalls.end(); it++)
+	{
+		this->removeChild((*it), true);
+	}
+	activeBalls.clear();
 }
 
 const CCPoint& Line::getStartPos()
@@ -102,6 +158,7 @@ const CCPoint& Line::getStartPos()
 void Line::setStartPos(const CCPoint& _position)
 {
 	startPos = _position;
+	lineLength = startPos.getDistance(endPos);
 	updateLineGraphic();
 }
 
@@ -113,31 +170,24 @@ const CCPoint& Line::getEndPos()
 void Line::setEndPos(const CCPoint& _position)
 {
 	endPos = _position;
+	lineLength = startPos.getDistance(endPos);
 	updateLineGraphic();
 }
 
 CCPoint Line::getPointFromAbsDistance(float _absDistance)
 {
-	return startPos + ((endPos - startPos).normalize() * _absDistance);
+	return startPos + ((endPos - startPos).normalize() * clampf(_absDistance,0,lineLength));
 }
 
 CCPoint Line::getPointFromRelDistance(float _relDistance)
 {
-	return startPos.lerp(endPos, _relDistance);
+	return startPos.lerp(endPos, clampf(_relDistance,0,1));
 }
 
 void Line::updateLineGraphic()
 {
 	if(lineGraphic != NULL)
 	{
-		lineGraphic->setAnchorPoint(ccp(0.5f,0.5f));
-		lineGraphic->setPosition((endPos + startPos) * 0.5f);
-
-		float rotation = CC_RADIANS_TO_DEGREES((endPos - startPos).getAngle());
-		lineGraphic->setRotation(-rotation);
-
-		//TODO: Make this a 9slice?
-		float xScale = (endPos - startPos).getLength() / lineGraphic->getContentSize().width;
-		lineGraphic->setScaleX(xScale);
+		PlaceLineSprite(lineGraphic, startPos, endPos);
 	}
 }

@@ -73,5 +73,6 @@
     <ClInclude Include="Classes\Players\AIPlayer.h" />
     <ClInclude Include="Classes\Players\HumanPlayer.h" />
     <ClInclude Include="Classes\Players\Player.h" />
+    <ClInclude Include="Classes\Utility\LineSpriteHelper.h" />
   </ItemGroup>
 </Project>

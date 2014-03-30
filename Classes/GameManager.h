@@ -29,6 +29,12 @@ protected:
 
 	std::map<unsigned int, Player*> players;
 	std::list<Line*> activeLines;
+
+	cocos2d::CCLabelTTF* scoreText;
+	cocos2d::CCLabelTTF* timeText;
+
+	int bestTime;
+	float currentTime;
 };
 
 #endif
